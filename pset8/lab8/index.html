@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+        <title>Trivia!</title>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                document.querySelectorAll('.firstSet').forEach(function(el) {
+                    el.addEventListener("click", function() {
+                        document.querySelectorAll('.firstSet').forEach(function (i){
+                            i.style.backgroundColor = "#d9edff";
+                        })
+                        //console.log("clicked");
+                        //console.log(el.innerHTML);
+                        if (el.innerHTML == "Correct answer"){
+                            el.style.backgroundColor = "green";
+                            document.querySelector("#feedback").innerHTML = "Correct!";
+                            //console.log("yes");
+                        }
+                        else{
+                            el.style.backgroundColor = "red";
+                            document.querySelector("#feedback").innerHTML = "Incorrect";
+                        }
+                    }) 
+                    
+                })
+            });
+            
+            document.addEventListener('DOMContentLoaded', function(){
+                document.querySelector("#submit").addEventListener("click", function(e){
+                    e.preventDefault();
+                    let x = document.querySelector("#answer");
+                    if (x.value == "Correct"){
+                        document.querySelector("#feedback2").innerHTML = "Correct!";
+                        x.style.backgroundColor = 'green';
+                    }
+                    else{
+                        document.querySelector("#feedback2").innerHTML = "Incorrect!";
+                        x.style.backgroundColor = 'red';
+                    }
+                })
+            }
+            )
+
+        </script>
+
+    </head>
+    <body>
+
+        <div class="jumbotron">
+            <h1>Trivia!</h1>
+        </div>
+
+        <div class="container">
+
+            <div class="section">
+                <h2>Part 1: Multiple Choice </h2>
+                <hr>
+
+                <!-- TODO: Add multiple choice question here -->
+                <h3> What is the correct answer to this question?</h3>
+                <button class = firstSet>Wrong answer</button>
+                <button class = firstSet id = correct>Correct answer</button>
+                <button class = firstSet>Wrong answer</button>
+                <p id = feedback></p>
+
+            </div>
+
+            <div class="section">
+                <h2>Part 2: Free Response</h2>
+                <hr>
+
+                <h3>This is a second question</h3>
+                <form>
+                    <input type = text id = answer>
+                    <button id = submit type = submit>Submit</button>
+                    <p id = feedback2></p>
+                </form>
+                
+                
+
+            </div>
+
+        </div>
+    </body>
+</html>

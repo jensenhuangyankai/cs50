@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+
+
+    <body>
+
+        <button id = "Red">R</button>
+        <button id = "Green">G</button>
+        <button id = "Blue">B</button>
+
+        <select>
+            <option value="xx-large">xx-large</option>
+            <option value="x-large">x-large</option>
+            <option value="large">large</option>
+            <option selected value="initial">initial</option>
+            <option value="small">small</option>
+            <option value="x-small">x-small</option>
+            <option value="xx-small">xx-small</option>
+        </select>
+
+        <script>
+            document.querySelector("select").onclick = function(){
+                document.querySelector("#name").style.fontSize = this.value;
+            }
+
+            let body = document.querySelector("body");
+            document.querySelector('#Red').onclick = function(){
+                body.style.backgroundColor = 'red';
+            };
+            document.querySelector('#Green').onclick = function(){
+                body.style.backgroundColor = 'green';
+            };
+            document.querySelector('#Blue').onclick = function(){
+                body.style.backgroundColor = 'blue';
+            };
+        </script>
+        <form>
+            <input placeholder = "lmao" type= text>
+        </form>
+        <p id = 'name'></p>
+
+
+    </body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let input = document.querySelector('input');
+            document.addEventListener('keyup', function(){
+                let name = document.querySelector("#name");
+                if (input.value){
+                    name.innerHTML = `Hello, ${input.value}`;
+                }
+                else{
+                    name.innerHTML = "Hello, whoever you are";
+                }
+            });
+        });
+
+        let visible = 'hidden';
+        function blink(object){
+            if (visible == 'hidden'){
+                visible = 'visible';
+            }
+            else{
+                visible = 'hidden';
+            }
+            object.style.visibility = visible;
+            console.log(visible);
+            console.log(object.style.visibility);
+        }
+        window.setInterval(function(){blink(document.querySelector("#name"));},500);
+        //window.setInterval(console.log("hello"), 500);
+
+
+    </script>
+</html>
