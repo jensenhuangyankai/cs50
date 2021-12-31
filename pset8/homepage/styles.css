@@ -1,9 +1,11 @@
-.nav-link:hover {
-    color: #000;
+h1 {
+    font-size: 8vh;
 }
-.navbar-collapse {
-    justify-content: flex-end;
+
+div.carousel-caption h1{
+    opacity: 0.5;
 }
-.nav-link {
-    margin-right: 1em !important;
+
+div.carousel-caption a{
+    opacity: 0.8;
 }
