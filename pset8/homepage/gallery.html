@@ -8,22 +8,169 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="visibility.js"></script>
         <link href="styles.css" rel="stylesheet">
+        <link href="labs.css" rel="stylesheet">
         
         <title>Gallery</title>
     </head>
     <body>
         <div class = "container-fluid">
         <div class = "jumbotron text-center">
-            <h1>JensenHShoots</h1>
+            <h1><a href="index.html">JensenHShoots</a></h1>
             <footer>A creative portfolio</footer>
             <p style = "margin: 35px"></p>
-            <a href = "gallery.html"><button type = "button" class = "btn btn-outline-light">Gallery</button></a>
-            <button type = "button" class = "btn btn-outline-light">About us</button>
-            <button type = "button" class = "btn btn-outline-light">Contact</button>
+            <a href = "gallery.html"><button type = "button" class = "btn btn-outline-dark">Gallery</button></a>
+            <button type = "button" class = "btn btn-outline-dark">About us</button>
+            <button type = "button" class = "btn btn-outline-dark">Contact</button>
         </div>
         </div>
         
+        <div class = "container">
+        <div class = "wrapper">
+        <button type = "button" class = "btn btn-outline-dark" onclick="show(['Portraits','Landscapes','Events'])">All</button>
+        <button type = "button" class = "btn btn-outline-dark" onclick="show(['Portraits']); hide(['Events','Landscapes']);">Portraits</button>
+        <button type = "button" class = "btn btn-outline-dark" onclick="show(['Landscapes']); hide(['Portraits','Events'])">Landscapes</button>
+        <button type = "button" class = "btn btn-outline-dark" onclick="show(['Events']); hide(['Landscapes','Portraits'])">Events</button>
+
+        <button type="button" class="btn mb-2 mb-md-0 btn-quarternary btn-block">Default</button>
+
+        <p style = "margin: 35px"></p>
+        <div class="masonry">
+            <div class="brick">
+                <img src="Images/Events 1.jpg" class="Events" alt="Events 1" title="Events 1">
+            </div>
+            <div class="brick">
+                <img src="Images/Events 2.jpg" class="Events" alt="Events 2" title="Events 2">
+            </div>
+            <div class="brick">
+                <img src="Images/Events 3.jpg" class="Events" alt="Events 3" title="Events 3">
+            </div>
+            <div class="brick">
+                <img src="Images/Events 4.jpg" class="Events" alt="Events 4" title="Events 4">
+            </div>
+            <div class="brick">
+                <img src="Images/Events 5.jpg" class="Events" alt="Events 5" title="Events 5">
+            </div>
+            <div class="brick">
+                <img src="Images/Events 6.jpg" class="Events" alt="Events 6" title="Events 6">
+            </div>
+            <div class="brick">
+                <img src="Images/Events 7.jpg" class="Events" alt="Events 7" title="Events 7">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 1.jpg" class="Landscapes" alt="Landscapes 1" title="Landscapes 1">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 10.jpg" class="Landscapes" alt="Landscapes 10" title="Landscapes 10">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 11.jpg" class="Landscapes" alt="Landscapes 11" title="Landscapes 11">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 12.jpg" class="Landscapes" alt="Landscapes 12" title="Landscapes 12">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 13.jpg" class="Landscapes" alt="Landscapes 13" title="Landscapes 13">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 14.jpg" class="Landscapes" alt="Landscapes 14" title="Landscapes 14">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 15.jpg" class="Landscapes" alt="Landscapes 15" title="Landscapes 15">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 16.jpg" class="Landscapes" alt="Landscapes 16" title="Landscapes 16">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 17.jpg" class="Landscapes" alt="Landscapes 17" title="Landscapes 17">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 18.jpg" class="Landscapes" alt="Landscapes 18" title="Landscapes 18">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 19.jpg" class="Landscapes" alt="Landscapes 19" title="Landscapes 19">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 2.jpg" class="Landscapes" alt="Landscapes 2" title="Landscapes 2">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 20.jpg" class="Landscapes" alt="Landscapes 20" title="Landscapes 20">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 21.jpg" class="Landscapes" alt="Landscapes 21" title="Landscapes 21">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 22.jpg" class="Landscapes" alt="Landscapes 22" title="Landscapes 22">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 23.jpg" class="Landscapes" alt="Landscapes 23" title="Landscapes 23">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 3.jpg" class="Landscapes" alt="Landscapes 3" title="Landscapes 3">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 4.jpg" class="Landscapes" alt="Landscapes 4" title="Landscapes 4">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 5.jpg" class="Landscapes" alt="Landscapes 5" title="Landscapes 5">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 6.jpg" class="Landscapes" alt="Landscapes 6" title="Landscapes 6">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 7.jpg" class="Landscapes" alt="Landscapes 7" title="Landscapes 7">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 8.jpg" class="Landscapes" alt="Landscapes 8" title="Landscapes 8">
+            </div>
+            <div class="brick">
+                <img src="Images/Landscapes 9.jpg" class="Landscapes" alt="Landscapes 9" title="Landscapes 9">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 1.jpg" class="Portraits" alt="Portraits 1" title="Portraits 1">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 10.jpg" class="Portraits" alt="Portraits 10" title="Portraits 10">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 11.jpg" class="Portraits" alt="Portraits 11" title="Portraits 11">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 12.jpg" class="Portraits" alt="Portraits 12" title="Portraits 12">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 2.jpg" class="Portraits" alt="Portraits 2" title="Portraits 2">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 3.jpg" class="Portraits" alt="Portraits 3" title="Portraits 3">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 4.jpg" class="Portraits" alt="Portraits 4" title="Portraits 4">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 5.jpg" class="Portraits" alt="Portraits 5" title="Portraits 5">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 6.jpg" class="Portraits" alt="Portraits 6" title="Portraits 6">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 7.jpg" class="Portraits" alt="Portraits 7" title="Portraits 7">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 8.jpg" class="Portraits" alt="Portraits 8" title="Portraits 8">
+            </div>
+            <div class="brick">
+                <img src="Images/Portraits 9.jpg" class="Portraits" alt="Portraits 9" title="Portraits 9">
+            </div>
+            
+            
+            
+            
+        </div>
+        </div>
+        </div>
+
 
     </body>
 </html>
