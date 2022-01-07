@@ -2,6 +2,10 @@ h1 {
     font-size: 8vh;
 }
 
+.GeneratedText {
+    font-family:Copperplate;text-decoration:none;letter-spacing:0.2em;line-height:1.3em;color:#C0C0C0;padding:1em;
+}
+
 div.carousel-caption h1{
     opacity: 0.5;
 }
@@ -82,3 +86,5 @@ div.carousel-caption a{
     .btn.btn-quarternary:hover, .btn.btn-quarternary:focus {
       border-color: #a44d87 !important;
       background: #a44d87 !important; }
+
+
