@@ -1,0 +1,46 @@
+h1 {
+    font-size: 8vh;
+}
+
+.HeaderText {
+    font-family:Copperplate;
+    text-decoration:none;
+    letter-spacing:0.2em;
+    line-height:1.3em;
+    color:#C0C0C0;
+    font-size: 150%
+    /*padding:1em;*/
+}
+.HeaderDescription {
+    font-family:Copperplate;
+    text-decoration:none;
+    letter-spacing:0.2em;
+    line-height:1.3em;
+    color:#616161;
+    font-size: 70%;
+}
+
+div.carousel-caption h1{
+    opacity: 0.5;
+}
+
+div.carousel-caption a{
+    opacity: 0.8;
+}
+
+.title,
+.desc,
+.intro {
+  text-align: center;
+}
+
+
+.btn.btn-quarternary {
+    color: #fff;
+    border-color: #b96b9f;
+    background: #b96b9f; }
+    .btn.btn-quarternary:hover, .btn.btn-quarternary:focus {
+      border-color: #a44d87 !important;
+      background: #a44d87 !important; }
+
+
