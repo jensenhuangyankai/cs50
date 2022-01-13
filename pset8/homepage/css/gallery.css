@@ -20,7 +20,7 @@ body { font-family: sans-serif; }
 
 /* ---- .grid-item ---- */
 
-.grid-sizer,
+/*.grid-sizer,*/
 .grid-item {
   width: 33.333%;
 }

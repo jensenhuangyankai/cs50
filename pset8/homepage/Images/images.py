@@ -1,6 +1,6 @@
 import os
 
-filenames = next(os.walk("D:\Projects\Programming\cs50\pset8\homepage\Images"), (None, None, []))[2]  # [] if no file
+filenames = next(os.walk(os.getcwd()), (None, None, []))[2]  # [] if no file
 #print(filenames)
 newlist = []
 extensions = []
@@ -12,11 +12,14 @@ for i in range(len(newlist)):
     print("\'" + newlist[i].split()[0] + "\'")
 
 
-with open("D:\Projects\Programming\cs50\pset8\homepage\Images\output.txt" , "w") as f:
+with open("output.txt" , "w") as f:
     f.truncate(0)
     for i in range(len(filenames)):
         if extensions[i] == ".jpg" or extensions[i] == ".jpeg" or extensions[i] == ".png":
-            f.write('<div class="brick">\n    <img src="Images/'+ filenames[i] + '" class="'+newlist[i].split()[0]+'" alt="'+newlist[i]+'" title="'+newlist[i]+'">\n</div>\n')
+            filename = filenames[i]
+            classname = newlist[i].split()[0]
+            altname = newlist[i]
+            f.write('<div class="grid-item" data-src="Images/'+filename+'">\n    <img src="Images/'+ filename + '" class="'+classname+'" alt="'+altname+'" title="'+altname+'">\n</div>\n')
 
 
 
