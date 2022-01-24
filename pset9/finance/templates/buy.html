@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    
+    <form action="/buy" method="post">
+        <div class = "container">Cash remaining: {{ money }}</div>
+        <div class="mb-3 pt-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Stock Symbol" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Get Price</button>
+    </form>
+
+    {% if count %}
+        <div class="container">
+            <p>Price of {{ symbol }} is {{ price }}</p>
+            <p>You can buy {{ count }} {{ symbol }}</p>
+        </div>
+    {% endif %}
+{% endblock %}

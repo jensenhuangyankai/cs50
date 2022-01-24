@@ -5,6 +5,8 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
+import datetime
+import math
 
 from helpers import apology, login_required, lookup, usd
 
@@ -24,7 +26,7 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finance.db")
-db.execute("CREATE TABLE IF NOT EXISTS stocks (id INTEGER NOT NULL,symbol VARCHAR(255) NOT NULL, quantity INTEGER NOT NULL, FOREIGN KEY (id) REFERENCES users(id))")
+db.execute("CREATE TABLE IF NOT EXISTS stocks (id INTEGER NOT NULL,symbol VARCHAR(255) NOT NULL, quantity INTEGER NOT NULL, price FLOAT,time_bought timestamp ,FOREIGN KEY (id) REFERENCES users(id))")
 
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
@@ -51,7 +53,17 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+    id = session["user_id"]
+    money = db.execute("SELECT cash FROM users WHERE id =?",id)[0]["cash"]
+    if request.method == "GET":
+        return render_template("buy.html", money = money)
+
+    if request.method == "POST":
+        if request.form.get("symbol"):
+            symbol = request.form.get("symbol")
+            price = lookup(symbol)["price"]
+            return render_template("buy.html",money=money, price=price, symbol=symbol, count=math.floor(money/price))
+
 
 
 @app.route("/history")
