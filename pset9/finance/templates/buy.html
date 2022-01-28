@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Quote
+    Buy
 {% endblock %}
 
 {% block main %}
@@ -18,6 +18,16 @@
         <div class="container">
             <p>Price of {{ symbol }} is {{ price }}</p>
             <p>You can buy {{ count }} {{ symbol }}</p>
+
+            <form action="/buy" method="post">
+                <label for="buy-amount">Choose how many of {{ symbol }} to buy</label>
+                <select id="buy-amount" name="quantity">
+                    {% for i in range(1,count+1) %}
+                        <option value ="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-primary" type="submit">BUY</button>
+            </form>
         </div>
     {% endif %}
 {% endblock %}
