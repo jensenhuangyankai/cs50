@@ -28,7 +28,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finance.db")
 db.execute("CREATE TABLE IF NOT EXISTS stocks (id INTEGER NOT NULL,symbol VARCHAR(255) NOT NULL, quantity INTEGER NOT NULL, price FLOAT,time_bought timestamp ,FOREIGN KEY (id) REFERENCES users(id))")
-db.execute("CREATE TABLE IF NOT EXISTS history (id INTEGER NOT NULL, time_bought timestamp ,symbol VARCHAR(255) NOT NULL, action VARCHAR(255) NOT NULL, quantity INTEGER NOT NULL, price FLOAT, total_price FLOAT, FOREIGN KEY (id) REFERENCES users(id))")
+db.execute("CREATE TABLE IF NOT EXISTS history (id INTEGER NOT NULL, time timestamp ,symbol VARCHAR(255) NOT NULL, action VARCHAR(255) NOT NULL, quantity INTEGER NOT NULL, price FLOAT, total_price FLOAT, FOREIGN KEY (id) REFERENCES users(id))")
 
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
@@ -192,8 +192,42 @@ def register():
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-    """Sell shares of stock"""
-    id = session["id"]
-    names = db.execute("SELECT symbol FROM stocks WHERE id = ?",id)
-
-    return render_template("sell.html",names=names)
+    id = session["user_id"]
+    items = db.execute("SELECT * FROM stocks WHERE id = ?",id)
+    for i in items:
+        i.pop("time_bought")
+        i.pop("id")
+    """Show portfolio of stocks"""
+    if request.method == "POST":
+        sell_quantity = int(request.form.get("quantity"))
+        if sell_quantity > 0:
+            sell_price=request.form.get("price")
+            if sell_price != "":
+                sell_price = float(sell_price)
+            else:
+                return render_template("sell.html",items=items)
+            symbol = request.form.get("symbol")
+            print(symbol)
+            entry = db.execute("SELECT * FROM stocks WHERE symbol = ?",symbol)
+            if entry != []:
+                entry = entry[0]
+            else:
+                return render_template("sell.html",items=items)
+            initial_quantity = int(entry["quantity"])
+            if sell_quantity <= initial_quantity:
+                final_quantity = initial_quantity - sell_quantity
+                if final_quantity > 0:
+                    db.execute("UPDATE stocks SET quantity = ? WHERE id =? and symbol = ?",final_quantity , id, symbol)
+                else:
+                    print("stonk quantity is zero so deleting")
+                    db.execute("DELETE FROM stocks WHERE id = ? and symbol = ?", id,symbol)
+                time_sold = datetime.now()
+                time_sold = time_sold.strftime("%m/%d/%Y, %H:%M:%S")
+                initial_money = db.execute("SELECT cash FROM users WHERE id = ?",id)[0]['cash']
+                print(initial_money)
+                final_money = initial_money + sell_price*sell_quantity
+                db.execute("UPDATE users SET cash=? WHERE id =?",final_money,id)
+                db.execute("INSERT INTO history VALUES(?,?,?,?,?,?,?)",id,time_sold,symbol,"SELL",sell_quantity,sell_price,sell_price*sell_quantity)
+                return render_template("sell.html",items=items)
+    if request.method == "GET":
+        return render_template("sell.html",items=items)
