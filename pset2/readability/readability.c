@@ -12,6 +12,7 @@ int main(void)
 
     for (int i = 0, n = strlen(text); i < n; i++)
     {
+        printf("%d\n",i);
         if (text[i] == '\'') i++;
         if (text[i] == ',')
         {
@@ -34,10 +35,13 @@ int main(void)
 
     }
 
-    //printf("%i\n%i\n%i\n", letters, sentences,words);
+    printf("%i\n%i\n%i\n", letters, sentences,words);
     float L = letters * (100.0/words);
+    //printf("%f\n",L);
     float S = sentences * (100.0/words);
+    //printf("%f\n",S);
     float index = 0.0588 * L - 0.296 * S - 15.8;
+    //printf("%f\n",index);
     //printf("%f\n", index);
     //printf("%f\n%f", L,S);
 
