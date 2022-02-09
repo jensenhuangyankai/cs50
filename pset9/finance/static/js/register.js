@@ -1,7 +1,7 @@
-$('#password, #confirm-password').on('keyup', function () {
+$('#password, #confirmation').on('keyup', function () {
     var button = document.getElementById("submit");
     console.log("running");
-    if ($('#password').val() == $('#confirm-password').val()) {
+    if ($('#password').val() == $('#confirmation').val()) {
         button.disabled = false;
         $('#message').html('Matching').css('color', 'green');
         //console.log(button.disabled)

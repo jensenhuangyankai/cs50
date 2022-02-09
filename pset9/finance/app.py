@@ -1,7 +1,7 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -53,7 +53,8 @@ def index():
     for i in items:
         i.pop("id")
     print(items)
-    return render_template("index.html",items=items)
+    money = float(db.execute("SELECT cash FROM users WHERE id =?",id)[0]["cash"])
+    return render_template("index.html",items=items, money=money)
 
 symbol = ""
 @app.route("/buy", methods=["GET", "POST"])
@@ -67,33 +68,48 @@ def buy():
 
     global symbol
     if request.method == "POST":
-        if request.form.get("quantity"):
-            price = float(lookup(symbol)["price"])
-            quantity = int(request.form.get("quantity"))
-            
-            print(price*quantity)
-            if (price * quantity < money):
-                money = money - price*quantity
-                db.execute("UPDATE users SET cash=? WHERE id =?",money,id)
-                time_bought = datetime.now()
-                time_bought = time_bought.strftime("%m/%d/%Y, %H:%M:%S")
-                db.execute("INSERT INTO history VALUES(?,?,?,?,?,?,?)",id,time_bought,symbol,"BUY",quantity,price,price*quantity)
-
-                if db.execute("SELECT id from stocks WHERE symbol=?",symbol) != []: #stock exists
-                    existing_record = db.execute("SELECT * FROM stocks WHERE symbol=? AND id = ?",symbol,id)
-                    print(existing_record)
-                    existing_amount = int(existing_record[0]["quantity"])
-                    existing_price = float(existing_record[0]["price"])
-                    new_price = (price*quantity + existing_amount*existing_price)/(existing_amount+quantity)
-                    db.execute("UPDATE stocks SET quantity = ?, time_bought = ? ,price=? WHERE id = ? AND symbol = ?",quantity+existing_amount,time_bought,price,id,symbol)
-                else:
-                    db.execute("INSERT INTO stocks VALUES (?,?,?,?,?)",id,symbol,quantity,price,time_bought)
-                return render_template("buy.html",money=money, price=price, symbol=symbol, count=math.floor(money/price))
-
-        if request.form.get("symbol"):
+        symbol = request.form.get("symbol")
+        quantity = request.form.get("shares")
+        if symbol == "":
+            return apology("Symbol cannot be empty!")
+        answer = lookup(symbol)
+        if answer == None:
+            return apology("Recheck the validity of your symbol!")
+        if symbol:
             symbol = request.form.get("symbol").upper()
             price = lookup(symbol)["price"]
-            return render_template("buy.html",money=money, price=price, symbol=symbol, count=math.floor(money/price))
+            #return render_template("buy.html",money=money, price=price, symbol=symbol, count=math.floor(money/price))
+        else:
+            return apology("Symbol empty!")
+
+
+
+        price = float(lookup(symbol)["price"])
+        
+        print()
+        if quantity.isdigit() == False:
+            return apology("quantity is not integer!")
+        quantity = int(quantity)
+        print(price*quantity)
+        if (price * quantity < money):
+            money = money - price*quantity
+            db.execute("UPDATE users SET cash=? WHERE id =?",money,id)
+            time_bought = datetime.now()
+            time_bought = time_bought.strftime("%m/%d/%Y, %H:%M:%S")
+            db.execute("INSERT INTO history VALUES(?,?,?,?,?,?,?)",id,time_bought,symbol,"BUY",quantity,price,price*quantity)
+
+            if db.execute("SELECT id from stocks WHERE symbol=?",symbol) != []: #stock exists
+                existing_record = db.execute("SELECT * FROM stocks WHERE symbol=? AND id = ?",symbol,id)
+                print(existing_record)
+                existing_amount = int(existing_record[0]["quantity"])
+                existing_price = float(existing_record[0]["price"])
+                new_price = (price*quantity + existing_amount*existing_price)/(existing_amount+quantity)
+                db.execute("UPDATE stocks SET quantity = ?, time_bought = ? ,price=? WHERE id = ? AND symbol = ?",quantity+existing_amount,time_bought,price,id,symbol)
+            else:
+                db.execute("INSERT INTO stocks VALUES (?,?,?,?,?)",id,symbol,quantity,price,time_bought)
+            return render_template("buy.html",money=money, price=price, symbol=symbol, count=math.floor(money/price), total_cost = quantity*price)
+
+        
 
 
 @app.route("/history")
@@ -165,7 +181,11 @@ def quote():
 
     if request.method == "POST":
         symbol = request.form.get("symbol")
+        if symbol == "":
+            return apology("Symbol cannot be empty!")
         answer = lookup(symbol)
+        if answer == None:
+            return apology("Recheck the validity of your symbol!")
         return render_template("quoted.html", price=answer["price"], symbol=answer["symbol"]) #include more parameters from lookup here.
 
 
@@ -175,15 +195,18 @@ def register():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        confirm_password = request.form.get("confirm-password")
+        confirmation = request.form.get("confirmation")
         #print(password,confirm_password)
         if (db.execute("SELECT username FROM users where username = ?", username)):
             return apology("username already taken!")
 
-        if password == confirm_password and username != "":
-            hashed = generate_password_hash(password)
-            #print(username,hashed)
-            db.execute("INSERT INTO users (username,hash) VALUES (?,?)",username,hashed)
+        if password != confirmation:
+            return apology("check your confirmation")
+        if username == "" or password == "" or confirmation == "":
+            return apology("username/password is empty!")
+        hashed = generate_password_hash(password)
+        #print(username,hashed)
+        db.execute("INSERT INTO users (username,hash) VALUES (?,?)",username,hashed)
 
         
     return render_template("register.html")
@@ -197,16 +220,29 @@ def sell():
     for i in items:
         i.pop("time_bought")
         i.pop("id")
+
+    result = db.execute("SELECT symbol FROM stocks WHERE id = ?", id)
+    print(result)
+    all_symbols = []
+    for thing in result:
+        all_symbols.append(thing['symbol'])
+
     """Show portfolio of stocks"""
     if request.method == "POST":
-        sell_quantity = int(request.form.get("quantity"))
+        symbol = request.form.get("symbol")
+        print(symbol)
+        sell_quantity = request.form.get("shares")
+        if sell_quantity.isdigit() == False:
+            return apology("quantity is not integer!")
+        else:
+            sell_quantity=int(sell_quantity)
         if sell_quantity > 0:
-            sell_price=request.form.get("price")
+            sell_price= float(lookup(symbol)["price"])
             if sell_price != "":
                 sell_price = float(sell_price)
             else:
                 return render_template("sell.html",items=items)
-            symbol = request.form.get("symbol")
+            
             print(symbol)
             entry = db.execute("SELECT * FROM stocks WHERE symbol = ?",symbol)
             if entry != []:
@@ -228,6 +264,11 @@ def sell():
                 final_money = initial_money + sell_price*sell_quantity
                 db.execute("UPDATE users SET cash=? WHERE id =?",final_money,id)
                 db.execute("INSERT INTO history VALUES(?,?,?,?,?,?,?)",id,time_sold,symbol,"SELL",sell_quantity,sell_price,sell_price*sell_quantity)
+                return redirect(url_for('index'))
                 return render_template("sell.html",items=items)
+            else:
+                return apology("selling too many!")
+        
     if request.method == "GET":
-        return render_template("sell.html",items=items)
+        
+        return render_template("sell.html",items=items,symbols=all_symbols)

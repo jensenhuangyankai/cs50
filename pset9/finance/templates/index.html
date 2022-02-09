@@ -11,8 +11,13 @@
         <th scope="col">#</th>
         {% if items|length > 0 %}
 
-        {% for key,value in items[0].items() %}        
-          <th scope="col">{{ key|upper|replace("_"," ") }}</th>
+        {% for key,value in items[0].items() %}
+          {% if key=="price" %}
+            <th scope="col">{{ key|upper|replace("_"," ") }}</th>
+            <th scope="col">Total Price</th>
+          {% else %}
+            <th scope="col">{{ key|upper|replace("_"," ") }}</th>
+          {% endif %}
         {% endfor %}
 
         {% else %}
@@ -22,16 +27,25 @@
     </thead>
     <tbody>
       {% set ns=namespace(i=0) %}
+      {% set totalcost=namespace(q=0) %}
       {% for item in items %}
         <tr>
           <th scope="row">{{ ns.i }}</th>
           {% set ns.i = ns.i+1 %}
           {% for key,value in item.items() %}
-            <td>{{ value }}</td>
+            {% if key == "quantity" %}
+              {% set totalcost.q = value | int %}
+            {% endif %}
+            {% if key == "price" %}
+              <td>{{ value | usd }}</td>
+              <td>{{ (value|float * totalcost.q) | usd }} </td>
+            {% else %}
+              <td>{{ value }}</td>
+            {% endif %}
           {% endfor %}
         </tr>
       {% endfor %}
     </tbody>
   </table>
-
+  <p> REMAINING CASH = {{ money | usd }}</p>
 {% endblock %}

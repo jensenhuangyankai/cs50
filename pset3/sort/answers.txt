@@ -1,0 +1,11 @@
+sort1 uses: Bubble 
+
+How do you know?: Takes very long at worst case but if it is already sorted it takes less time
+
+sort2 uses: Merge
+
+How do you know?: shortest overall
+
+sort3 uses: Selection
+
+How do you know?: Does not matter if its already sorted still takes the same time

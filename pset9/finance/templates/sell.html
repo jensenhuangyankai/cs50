@@ -6,50 +6,19 @@
 
 {% block main %}
     
-<table class="table table-hover table-dark">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        {% if items|length > 0 %}
 
-        {% for key,value in items[0].items() %}        
-          <th scope="col">{{ key|upper|replace("_"," ") }}</th>
-        {% endfor %}
-
-        {% else %}
-          <td colspan="2"> BUY STUFF </td>
-        {% endif %}
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% set ns=namespace(i=0) %}
-      {% for item in items %}
-        <tr>
-          <th scope="row">{{ ns.i }}</th>
-          {% set ns.i = ns.i+1 %}
-          {% for key,value in item.items() %}
-            <td>{{ value }}</td>
-          {% endfor %}
-            <td>
-                <form action="/sell" method="post">
-                    <select id="sell-amount" name="quantity">
-                        {% for i in range(item['quantity']+1) %}
-                        {% if i > 0 %}
-                            <option name = "quantity" value ="{{ i }}">{{ i }}</option>
-                        {% endif %}
-                        {% endfor %}
-                        
-                        
-                    </select>
-                    <input name = "price" placeholder="price (USD)" autocomplete="off"></input>
-                    <input name = "symbol" value = "{{ item['symbol'] }}" type = "hidden"></input>
-                    <button class="btn btn-primary" type="submit">SELL</button>
-                </form>
-            </td>
-        </tr>
+<form action="/sell" method="post">
+    <input name = "shares" placeholder="shares to sell" autocomplete="off"></input>
+  
+    <select id="symbol" name = "symbol">
+      {% for symbol in symbols %}
+          <option name = "symbol" value ="{{ symbol }}">{{ symbol }}</option>
       {% endfor %}
-    </tbody>
-  </table>
+    </select>
+
+    <button class="btn btn-primary" type="submit">SELL</button>
+</form>
+
+
 
 {% endblock %}

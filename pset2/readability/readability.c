@@ -24,10 +24,15 @@ int main(void)
             sentences++;
             words++;
             i++;
+            printf("word");
 
         }
 
-        else if (text[i] == ' ') words++;
+        else if (text[i] == ' ') 
+        {
+            words++;
+            printf("word");
+        }
 
         else letters++;
 

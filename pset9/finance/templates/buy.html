@@ -5,29 +5,28 @@
 {% endblock %}
 
 {% block main %}
-    
-    <form action="/buy" method="post">
-        <div class = "container">Cash remaining: {{ money }}</div>
-        <div class="mb-3 pt-3">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Stock Symbol" type="text">
-        </div>
-        <button class="btn btn-primary" type="submit">Get Price</button>
-    </form>
 
-    {% if count %}
-        <div class="container">
+    <div class="container">
+        <form action="/buy" method="post">
+            <div class = "container">Cash remaining: {{ money | usd }}</div>
+            <div class="mb-3 pt-3">
+                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Stock Symbol" type="text">
+            </div>
+            <label for="buy-amount">Choose how many of {{ symbol }} to buy</label>
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="shares" name="shares" placeholder="Quantity" type="text"> 
+            <button class="btn btn-primary" type="submit">BUY</button>
+        </form>
+
+        {% if price %}
+            <p>Price of {{ symbol }} is {{ price | usd }}</p>
+        {% else %}
             <p>Price of {{ symbol }} is {{ price }}</p>
-            <p>You can buy {{ count }} {{ symbol }}</p>
+        {% endif %}
+        <p>You can buy {{ count }} {{ symbol }}</p>
 
-            <form action="/buy" method="post">
-                <label for="buy-amount">Choose how many of {{ symbol }} to buy</label>
-                <select id="buy-amount" name="quantity">
-                    {% for i in range(1,count+1) %}
-                        <option value ="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-                <button class="btn btn-primary" type="submit">BUY</button>
-            </form>
-        </div>
-    {% endif %}
+        {% if total_cost %}
+            <p>Price of {{ symbol }} is {{ price | usd }}</p>
+            <p>Total cost: {{ total_cost | usd }}</p>
+        {% endif %}
+    </div>
 {% endblock %}
